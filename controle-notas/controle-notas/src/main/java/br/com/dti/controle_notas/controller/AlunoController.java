@@ -5,6 +5,7 @@ import br.com.dti.controle_notas.repository.AlunoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5174")
@@ -45,4 +46,30 @@ public class AlunoController {
                 .filter(a -> a.getFrequencia() < 75)
                 .toList();
     }
+
+    @GetMapping("/media-turma")
+    public List<Double> mediaTurmaPorDisciplina() {
+
+        List<Aluno> alunos = alunoRepository.findAll();
+
+        if (alunos.isEmpty()) return List.of();
+
+        int qtdDisciplinas = alunos.get(0).getNotas().size();
+
+        List<Double> medias = new ArrayList<>();
+
+        for (int i = 0; i < qtdDisciplinas; i++) {
+            int index = i;
+
+            double media = alunos.stream()
+                    .mapToDouble(a -> a.getNotas().get(index))
+                    .average()
+                    .orElse(0);
+
+            medias.add(media);
+        }
+
+        return medias;
+    }
+
 }
