@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import "./App.css";
+
 
 function App() {
 
@@ -6,6 +8,8 @@ function App() {
   const [acimaMedia, setAcimaMedia] = useState<any[]>([]);
   const [frequenciaBaixa, setFrequenciaBaixa] = useState<any[]>([]);
   const [mediaTurma, setMediaTurma] = useState<number[]>([]);
+  const [erros, setErros] = useState<Record<string, string>>({});
+
 
   const [nome, setNome] = useState("");
   const [frequencia, setFrequencia] = useState(0);
@@ -38,17 +42,26 @@ function App() {
   }
 
   function salvarAluno() {
-    fetch("http://localhost:8080/aluno", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, frequencia, notas })
-    }).then(() => {
+  fetch("http://localhost:8080/aluno", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nome, frequencia, notas })
+  })
+    .then(async res => {
+      if (!res.ok) {
+        const data = await res.json();
+        setErros(data);
+        return;
+      }
+
+      setErros({});
       carregarDados();
       setNome("");
-      setNotas([0,0,0,0,0]);
+      setNotas([0, 0, 0, 0, 0]);
       setFrequencia(0);
     });
-  }
+}
+
 
   function alterarNota(i:number, valor:number) {
     const copia = [...notas];
@@ -63,25 +76,55 @@ function App() {
 
       <h2>Novo aluno</h2>
 
-      <input placeholder="Nome" value={nome} onChange={e=>setNome(e.target.value)} />
+      <div className="field">
+  <label>Nome do aluno</label>
+  <input
+  className="input-nome"
+    value={nome}
+    onChange={e => setNome(e.target.value)}
+    style={{
+      border: erros.nome ? "2px solid red" : "1px solid #ccc"
+    }}
+  />
+  {erros.nome && <span className="error">{erros.nome}</span>}
+</div>
+
+
 
       <br /><br />
 
-      {notas.map((_, i) => (
-  <input
-    key={i}
-    type="number"
-    min={0}
-    max={10}
-    step="0.1"
-    placeholder={`Nota ${i + 1}`}
-    onChange={e => alterarNota(i, Number(e.target.value))}
-  />
+      <h3>Notas por disciplina</h3>
+
+{notas.map((_, i) => (
+  <div className="field" key={i}>
+    <label>Disciplina {i + 1}</label>
+
+    <input
+      className="input-nota"
+      type="number"
+      min={0}
+      max={10}
+      step="0.1"
+      value={notas[i]}
+      onChange={e => alterarNota(i, Number(e.target.value))}
+      style={{
+        border: erros[`notas[${i}]`] ? "2px solid red" : "1px solid #ccc"
+      }}
+    />
+
+    {erros[`notas[${i}]`] && (
+      <span className="error">
+        {erros[`notas[${i}]`]}
+      </span>
+    )}
+  </div>
 ))}
 
 
-      <br /><br />
 
+
+      <br /><br />
+<h3>Frequência do aluno</h3>
       <input
   type="number"
   min={0}
@@ -90,7 +133,15 @@ function App() {
   placeholder="Frequência"
   value={frequencia}
   onChange={e => setFrequencia(Number(e.target.value))}
+  style={{
+    border: erros.frequencia ? "2px solid red" : "1px solid #ccc"
+  }}
 />
+
+{erros.frequencia && (
+  <p style={{ color: "red" }}>{erros.frequencia}</p>
+)}
+
 
 
       <br /><br />

@@ -1,6 +1,6 @@
 body {
-  background: #0f172a;
-  color: white;
+  background: #bec4bf;
+  color: rgb(20, 15, 15);
   font-family: Arial, sans-serif;
 }
 
@@ -22,7 +22,7 @@ button {
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  background: #2563eb;
+  background: #053b08;
   color: white;
 }
 
@@ -31,15 +31,37 @@ button:hover {
 }
 
 .section {
-  background: #1e293b;
+  background: #3f6db6;
   padding: 20px;
   margin-top: 20px;
   border-radius: 10px;
 }
 
 .card {
-  background: #020617;
+  background: #6d81d6;
   padding: 10px;
   margin-top: 10px;
   border-radius: 8px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.field label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 3px;
+}
+.input-nota {
+  width: 80px;
+}
+.input-nome {
+  width: 700px;
 }

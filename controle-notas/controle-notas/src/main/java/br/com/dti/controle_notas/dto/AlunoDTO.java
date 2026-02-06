@@ -5,15 +5,20 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
+
 public class AlunoDTO {
     @NotBlank
     private String nome;
 
-    @Min(0)
-    @Max(100)
+    @Min(value = 0, message = "Frequência deve ser no mínimo 0%")
+    @Max(value = 100, message = "Frequência deve ser no máximo 100%")
     private Double frequencia;
 
-    private List<@Min(0) @Max(10) Double> notas;
+    private List<
+            @Min(value = 0, message = "Nota inválida (mínimo 0)")
+            @Max(value = 10, message = "Nota inválida (máximo 10)")
+                    Double
+            > notas;
 
     public String getNome() {
         return nome;
