@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import type { GridColDef } from "@mui/x-data-grid";
 import "./App.css";
 
 
+
 function App() {
+
+  const colunas: GridColDef[] = [
+  { field: "nome", headerName: "Aluno", flex: 1 },
+  { field: "media", headerName: "Média", width: 120 },
+  { field: "frequencia", headerName: "Frequência", width: 140 }
+];
+
 
   const [alunos, setAlunos] = useState<any[]>([]);
   const [acimaMedia, setAcimaMedia] = useState<any[]>([]);
@@ -160,11 +170,21 @@ function App() {
       ))}
 
       <h2>Todos alunos</h2>
-      {alunos.map(a=>(
-        <div key={a.id}>
-          {a.nome} — média {a.media} — frequência {a.frequencia}%
-        </div>
-      ))}
+
+<div style={{ height: 400, width: "100%" }}>
+  <DataGrid
+    rows={alunos}
+    columns={colunas}
+    getRowId={(row) => row.id}
+    pageSizeOptions={[5, 10]}
+    initialState={{
+      pagination: {
+        paginationModel: { pageSize: 5, page: 0 }
+      }
+    }}
+  />
+</div>
+
 
       <h2>Acima da média</h2>
       {acimaMedia.map(a=>(
