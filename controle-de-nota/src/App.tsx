@@ -67,23 +67,31 @@ function App() {
 
       <br /><br />
 
-      {notas.map((_,i)=>(
-        <input
-          key={i}
-          type="number"
-          placeholder={`Nota ${i+1}`}
-          onChange={e=>alterarNota(i, Number(e.target.value))}
-        />
-      ))}
+      {notas.map((_, i) => (
+  <input
+    key={i}
+    type="number"
+    min={0}
+    max={10}
+    step="0.1"
+    placeholder={`Nota ${i + 1}`}
+    onChange={e => alterarNota(i, Number(e.target.value))}
+  />
+))}
+
 
       <br /><br />
 
       <input
-        type="number"
-        placeholder="Frequência"
-        value={frequencia}
-        onChange={e=>setFrequencia(Number(e.target.value))}
-      />
+  type="number"
+  min={0}
+  max={100}
+  step="1"
+  placeholder="Frequência"
+  value={frequencia}
+  onChange={e => setFrequencia(Number(e.target.value))}
+/>
+
 
       <br /><br />
 

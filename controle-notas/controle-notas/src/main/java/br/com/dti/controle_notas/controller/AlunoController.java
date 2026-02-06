@@ -1,7 +1,9 @@
 package br.com.dti.controle_notas.controller;
 
+import br.com.dti.controle_notas.dto.AlunoDTO;
 import br.com.dti.controle_notas.models.Aluno;
 import br.com.dti.controle_notas.repository.AlunoRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +19,13 @@ public class AlunoController {
     private AlunoRepository alunoRepository;
 
     @PostMapping
-    public Aluno criarAluno(@RequestBody Aluno aluno) {
+    public Aluno criarAluno(@RequestBody @Valid AlunoDTO dto)
+    {
+        Aluno aluno = new Aluno();
+        aluno.setNome(dto.getNome());
+        aluno.setFrequencia(dto.getFrequencia());
+        aluno.setNotas(dto.getNotas());
+
         return alunoRepository.save(aluno);
     }
 
